@@ -1,0 +1,100 @@
+/* ============================================================
+   variables.css — Variables, reset y utilidades base
+   ============================================================ */
+
+/* ── VARIABLES ─────────────────────────────────────────── */
+:root {
+  /* Fondos */
+  --c-bg:    #0a0014;
+  --c-dark:  #0e0020;
+  --c-card:  #130028;
+  --c-card2: #1a003a;
+
+  /* Neón principal */
+  --c-pink:    #ff2d78;
+  --c-pink2:   #ff006a;
+  --c-cyan:    #00f5ff;
+  --c-purple:  #c400ff;
+  --c-gold:    #ffcc00;
+  --c-green:   #00ff99;
+  --c-magenta: #ff00cc;
+
+  /* Texto */
+  --c-text:   #f0e8ff;
+  --c-muted:  rgba(240,232,255,0.45);
+  --c-dimmed: rgba(240,232,255,0.2);
+
+  /* Estado */
+  --c-success: #00ff99;
+  --c-warning: #ffcc00;
+  --c-danger:  #ff2d78;
+
+  /* Bordes */
+  --c-border:  rgba(196,0,255,0.15);
+  --c-border2: rgba(196,0,255,0.25);
+
+  /* Glows */
+  --glow-pink:   0 0 18px rgba(255,45,120,0.6),  0 0 50px rgba(255,45,120,0.25);
+  --glow-cyan:   0 0 18px rgba(0,245,255,0.5),   0 0 50px rgba(0,245,255,0.2);
+  --glow-purple: 0 0 18px rgba(196,0,255,0.5),   0 0 50px rgba(196,0,255,0.2);
+  --glow-gold:   0 0 16px rgba(255,204,0,0.55),  0 0 40px rgba(255,204,0,0.2);
+  --glow-green:  0 0 16px rgba(0,255,153,0.5),   0 0 40px rgba(0,255,153,0.2);
+
+  /* Transiciones */
+  --t-fast:   0.18s ease;
+  --t-norm:   0.32s cubic-bezier(0.4,0,0.2,1);
+  --t-spring: 0.5s cubic-bezier(0.34,1.56,0.64,1);
+
+  /* Radios */
+  --r-sm:   6px;
+  --r-md:   14px;
+  --r-lg:   22px;
+  --r-full: 9999px;
+
+  /* Tipografías */
+  --font-display: 'Bebas Neue', sans-serif;
+  --font-body:    'Outfit', sans-serif;
+}
+
+/* ── RESET ─────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--font-body);
+  background: var(--c-bg);
+  color: var(--c-text);
+  overflow-x: hidden;
+  line-height: 1.6;
+  background-image:
+    radial-gradient(ellipse 70% 50% at 15% 20%,  rgba(196,0,255,0.18) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 45% at 85% 15%,  rgba(0,245,255,0.12) 0%, transparent 55%),
+    radial-gradient(ellipse 50% 60% at 50% 90%,  rgba(255,45,120,0.14) 0%, transparent 60%),
+    radial-gradient(ellipse 80% 40% at 30% 70%,  rgba(255,0,204,0.08) 0%, transparent 50%);
+  background-attachment: fixed;
+}
+img { max-width: 100%; display: block; }
+button { cursor: pointer; }
+
+/* ── SCROLLBAR ──────────────────────────────────────────── */
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: var(--c-bg); }
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, var(--c-pink), var(--c-purple));
+  border-radius: 3px;
+}
+
+/* ── CURSOR GLOW ────────────────────────────────────────── */
+.cursor-glow {
+  position: fixed; pointer-events: none; z-index: 0;
+  width: 500px; height: 500px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(196,0,255,0.07), rgba(255,45,120,0.04) 40%, transparent 70%);
+  transform: translate(-50%,-50%);
+  transition: opacity 0.3s;
+}
+
+/* ── UTILIDADES ─────────────────────────────────────────── */
+.reveal {
+  opacity: 0; transform: translateY(26px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.reveal.in { opacity: 1; transform: translateY(0); }
