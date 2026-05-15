@@ -1,13 +1,16 @@
 // ============================================================
 //  cart.js — Lógica del carrito de Tienda Mix
 //  Depende de: products.js (PRODUCTS debe estar cargado antes)
+//
+//  Clave interna: "productId" o "productId|Sabor"
+//  Esto permite tener el mismo producto con distintos sabores
+//  como entradas separadas en el carrito.
 // ============================================================
 
 const Cart = (() => {
-  // ─── Estado interno ──────────────────────────────────────
-  let _items = {};  // { [productId]: { ...product, qty } }
+  // _items: { [cartKey]: { ...product, qty, selectedFlavor, _key } }
+  let _items = {};
 
-  // ─── Privados ────────────────────────────────────────────
   function _getProduct(id) {
     return PRODUCTS.find((p) => p.id === id);
   }
@@ -23,56 +26,72 @@ const Cart = (() => {
   function _load() {
     try {
       const saved = localStorage.getItem("tiendamix_cart");
-      if (saved) _items = JSON.parse(saved);
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        // Migración: añadir _key si no existe (datos anteriores)
+        Object.entries(parsed).forEach(([k, v]) => {
+          if (!v._key) v._key = k;
+        });
+        _items = parsed;
+      }
     } catch (e) {
       _items = {};
     }
   }
 
   // ─── API pública ─────────────────────────────────────────
+
   function init() {
     _load();
   }
 
-  function add(productId, qty = 1) {
+  /**
+   * @param {number} productId
+   * @param {number} qty
+   * @param {string|null} flavor  - Sabor seleccionado (null si no aplica)
+   */
+  function add(productId, qty = 1, flavor = null) {
     const p = _getProduct(productId);
     if (!p) return { ok: false, msg: "Producto no encontrado" };
     if (p.stock === 0) return { ok: false, msg: "Producto sin stock" };
 
-    const currentQty = _items[productId]?.qty || 0;
+    const key = flavor ? `${productId}|${flavor}` : String(productId);
+    const currentQty = _items[key]?.qty || 0;
     const toAdd = Math.min(qty, p.stock - currentQty);
 
     if (toAdd <= 0) return { ok: false, msg: `Máximo disponible: ${p.stock} unidades` };
 
-    if (_items[productId]) {
-      _items[productId].qty += toAdd;
+    if (_items[key]) {
+      _items[key].qty += toAdd;
     } else {
-      _items[productId] = { ...p, qty: toAdd };
+      _items[key] = { ...p, qty: toAdd, selectedFlavor: flavor || null, _key: key };
     }
     _save();
-    return { ok: true, msg: `${toAdd}× ${p.name} agregado`, added: toAdd };
+
+    const flavorLabel = flavor ? ` (${flavor})` : "";
+    return { ok: true, msg: `${toAdd}× ${p.name}${flavorLabel} agregado`, added: toAdd };
   }
 
-  function remove(productId) {
-    if (!_items[productId]) return;
-    delete _items[productId];
+  function remove(key) {
+    delete _items[key];
     _save();
   }
 
-  function setQty(productId, qty) {
-    const p = _getProduct(productId);
+  function setQty(key, qty) {
+    if (!_items[key]) return;
+    const p = _getProduct(_items[key].id);
     if (!p) return;
     if (qty <= 0) {
-      remove(productId);
+      remove(key);
     } else {
-      _items[productId] = { ...p, qty: Math.min(qty, p.stock) };
+      _items[key].qty = Math.min(qty, p.stock);
       _save();
     }
   }
 
-  function changeQty(productId, delta) {
-    const current = _items[productId]?.qty || 0;
-    setQty(productId, current + delta);
+  function changeQty(key, delta) {
+    if (!_items[key]) return;
+    setQty(key, _items[key].qty + delta);
   }
 
   function clear() {
@@ -97,6 +116,7 @@ const Cart = (() => {
   }
 
   // ─── WhatsApp ────────────────────────────────────────────
+
   function buildWhatsAppMessage(clientInfo = {}) {
     const items = getItems();
     if (!items.length) return null;
@@ -113,6 +133,7 @@ const Cart = (() => {
 
     items.forEach((item) => {
       lines.push(`• ${item.qty}× ${item.name}`);
+      if (item.selectedFlavor) lines.push(`  🍓 *Sabor:* ${item.selectedFlavor}`);
       lines.push(`  💰 $${item.price} c/u = *$${(item.price * item.qty).toLocaleString()}*`);
     });
 

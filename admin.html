@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Panel Admin — Tienda Mix</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/admin.css" />
+</head>
+<body>
+
+<!-- ── LOGIN ──────────────────────────────────────────── -->
+<div id="adminLogin">
+  <div class="login-box">
+    <img src="assets/logotiendamix.jpg" alt="Tienda Mix" class="login-logo-img" />
+    <h1 class="login-title">Panel Admin</h1>
+    <p class="login-sub">Acceso restringido · Tienda Mix</p>
+    <input type="password" id="adminPassword" class="login-input" placeholder="Contraseña" />
+    <p id="loginError" class="login-error" style="display:none">Contraseña incorrecta</p>
+    <button id="loginBtn" class="login-btn">Entrar</button>
+  </div>
+</div>
+
+<!-- ── DASHBOARD ───────────────────────────────────────── -->
+<div id="adminDashboard" style="display:none">
+
+  <aside class="admin-sidebar">
+    <div class="sidebar-logo">TM Admin</div>
+    <nav class="sidebar-nav">
+      <button class="snav-btn active" data-tab="productos">📦 Productos</button>
+      <button class="snav-btn" data-tab="resenas">⭐ Reseñas</button>
+    </nav>
+    <button id="logoutBtn" class="logout-btn">↩ Cerrar sesión</button>
+  </aside>
+
+  <main class="admin-main">
+
+    <!-- Tab Productos -->
+    <section id="tabProductos" class="admin-tab active">
+      <div class="tab-header">
+        <h2 class="tab-title">Gestión de Productos</h2>
+        <button id="addProductBtn" class="btn-primary">+ Nuevo producto</button>
+      </div>
+      <div id="productsTable"></div>
+    </section>
+
+    <!-- Tab Reseñas -->
+    <section id="tabResenas" class="admin-tab">
+      <div class="tab-header">
+        <h2 class="tab-title">Reseñas de Clientes</h2>
+      </div>
+      <div class="resenas-cols">
+        <div>
+          <div class="rcol-title">⏳ Pendientes de aprobación</div>
+          <div id="pendingReviews"></div>
+        </div>
+        <div>
+          <div class="rcol-title">✅ Aprobadas (visibles en la web)</div>
+          <div id="approvedReviews"></div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<!-- ── MODAL PRODUCTO ──────────────────────────────────── -->
+<div id="productModal" class="admin-modal" style="display:none">
+  <div class="admin-modal-box">
+    <div class="am-header">
+      <h3 id="modalTitle">Nuevo Producto</h3>
+      <button id="closeModal" class="am-close">✕</button>
+    </div>
+    <div class="am-body">
+      <div class="form-grid">
+        <div class="fg">
+          <label>Nombre *</label>
+          <input type="text" id="pName" placeholder="Esencias Verona Frutal" />
+        </div>
+        <div class="fg">
+          <label>Categoría *</label>
+          <select id="pCat">
+            <option value="esencias">Esencias & Siropes</option>
+            <option value="bases">Bases en Polvo</option>
+            <option value="bubbas">Bubbas & Tapioca</option>
+            <option value="desechables">Vasos & Desechables</option>
+            <option value="utensilios">Utensilios Bar</option>
+          </select>
+        </div>
+        <div class="fg">
+          <label>Precio MXN *</label>
+          <input type="number" id="pPrice" placeholder="145" min="0" />
+        </div>
+        <div class="fg">
+          <label>Stock *</label>
+          <input type="number" id="pStock" placeholder="20" min="0" />
+        </div>
+        <div class="fg">
+          <label>Emoji</label>
+          <input type="text" id="pEmoji" placeholder="🫐" />
+        </div>
+        <div class="fg">
+          <label>Badge</label>
+          <select id="pBadge">
+            <option value="">Sin badge</option>
+            <option value="new">Nuevo</option>
+            <option value="hot">Popular</option>
+            <option value="sale">Oferta</option>
+          </select>
+        </div>
+        <div class="fg fg-full">
+          <label>Imagen (ruta relativa)</label>
+          <input type="text" id="pImage" placeholder="assets/productos/imagen.png" />
+        </div>
+        <div class="fg fg-full">
+          <label>Sabores (separados por " · ")</label>
+          <input type="text" id="pFlavors" placeholder="Fresa · Mango · Mora" />
+        </div>
+        <div class="fg fg-full">
+          <label>Descripción</label>
+          <textarea id="pDesc" rows="2" placeholder="Descripción del producto..."></textarea>
+        </div>
+        <div class="fg fg-full">
+          <label>Tags (separados por coma)</label>
+          <input type="text" id="pTags" placeholder="1 Litro, Verona, Frutal" />
+        </div>
+      </div>
+      <div class="am-actions">
+        <button id="cancelModal" class="btn-ghost">Cancelar</button>
+        <button id="saveProduct" class="btn-primary">Guardar producto</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="adminToast" class="admin-toast" style="display:none"></div>
+
+<script src="js/products.js"></script>
+<script src="js/admin.js"></script>
+</body>
+</html>

@@ -13,10 +13,8 @@
 /* ── RESPONSIVE — Tablet (≤ 1100px) ────────────────────── */
 @media (max-width: 1100px) {
   #mainNav { padding: 0 24px; }
-  .nav-links { display: none; }
   .section { padding: 60px 24px; }
   .cats-grid { grid-template-columns: repeat(3, 1fr); }
-  .prod-grid { grid-template-columns: repeat(2, 1fr); }
   .features-strip { flex-direction: column; }
   .feat { border-right: none; border-bottom: 1px solid var(--c-border); }
   .feat:last-child { border-bottom: none; }
@@ -30,14 +28,63 @@
   .cart-panel { width: 100%; max-width: 420px; }
 }
 
+/* ── ANIMACIONES ADICIONALES ────────────────────────────── */
+@keyframes float     { 0%,100% { transform:translateY(0); } 50% { transform:translateY(-7px); } }
+@keyframes shimmer   { 0% { background-position:-200% 0; } 100% { background-position:200% 0; } }
+@keyframes heartbeat { 0%,100% { transform:scale(1); } 25% { transform:scale(1.35); } 50% { transform:scale(1.1); } 75% { transform:scale(1.3); } }
+@keyframes popIn     { 0% { opacity:0; transform:scale(0.7); } 60% { transform:scale(1.08); } 100% { opacity:1; transform:scale(1); } }
+@keyframes shake     { 0%,100% { transform:translateX(0); } 20% { transform:translateX(-7px); } 40% { transform:translateX(7px); } 60% { transform:translateX(-4px); } 80% { transform:translateX(4px); } }
+
 /* ── RESPONSIVE — Móvil (≤ 640px) ──────────────────────── */
 @media (max-width: 640px) {
-  .hero { padding: 90px 18px 50px; }
-  .hero-stats { gap: 24px; }
-  .cats-grid { grid-template-columns: repeat(2, 1fr); }
-  .prod-grid { grid-template-columns: 1fr; }
-  .footer-grid { grid-template-columns: 1fr; }
-  .cart-panel { max-width: 100%; }
-  .hero-ctas { flex-direction: column; align-items: center; }
+  /* Espaciado */
+  .hero            { padding: 90px 18px 50px; }
+  .section         { padding: 50px 16px; }
+  .promo-wrap      { padding: 0 16px 50px; }
+  .contact-section { padding: 50px 16px; }
+  footer           { padding: 36px 16px 90px; }
+
+  /* Grids */
+  .hero-stats   { gap: 32px; }
+  .stat-n       { font-size: 2rem; }
+  .cats-grid    { grid-template-columns: repeat(2, 1fr); }
+  .prod-grid    { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .footer-grid  { grid-template-columns: 1fr; }
+  .hero-ctas    { flex-direction: column; align-items: center; }
   .promo-banner { padding: 28px 20px; }
+
+  /* Paneles full-width */
+  .cart-panel     { max-width: 100%; width: 100%; }
+  .wishlist-panel { max-width: 100%; width: 100%; }
+
+  /* Touch targets — mínimo ~44px */
+  .add-btn     { width: 44px; height: 44px; font-size: 1.2rem; }
+  .wish-btn    { width: 40px; height: 40px; font-size: 1.1rem; }
+  .qty-b       { width: 36px; height: 36px; font-size: 1rem; }
+  .mq-btn      { width: 40px; height: 40px; font-size: 1.1rem; }
+  .modal-close { width: 40px; height: 40px; font-size: 1rem; }
+  .qbtn        { padding: 12px 32px; font-size: 0.9rem; }
+
+  /* Filtros: scroll horizontal sin wrap */
+  .filter-row {
+    flex-wrap: nowrap; overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 6px; scrollbar-width: none; gap: 6px;
+  }
+  .filter-row::-webkit-scrollbar { display: none; }
+  .filter-lbl { display: none; }
+  .f-btn      { white-space: nowrap; flex-shrink: 0; padding: 9px 16px; min-height: 40px; }
+
+  /* Imagen de producto más compacta */
+  .prod-img-wrap { height: 180px; }
+
+  /* Botones de sabor más fáciles de tocar */
+  .flavor-btn { padding: 10px 18px; font-size: 0.85rem; min-height: 40px; }
+
+  /* Evitar zoom iOS al enfocar inputs */
+  .form-input, .form-textarea, .search-input { font-size: 16px; }
+
+  /* Toasts */
+  .toasts-container { right: 12px; left: 12px; }
+  .toast { min-width: unset; max-width: 100%; }
 }
